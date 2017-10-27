@@ -45,7 +45,7 @@ function getFields(callback) {
       callback(null, fields);
     });
   } else {
-    fields = program.fields ? program.fields.split(',') : undefined;
+    fields = program.fields ? program.fields.split(';') : undefined;
     callback(null, fields);
   }
 }
@@ -84,14 +84,14 @@ function getInput(callback) {
 function logPretty(csv) {
   var lines = csv.split(os.EOL);
   var table = new Table({
-    head: lines[0].split(','),
-    colWidths: lines[0].split('","').map(function (elem) {
+    head: lines[0].split(';'),
+    colWidths: lines[0].split('";"').map(function (elem) {
       return elem.length * 2;
     })
   });
 
   for (var i = 1; i < lines.length; i++) {
-    table.push(lines[i].split(','));
+    table.push(lines[i].split(';'));
   }
   return table.toString();
 }
@@ -130,7 +130,7 @@ getFields(function (err, fields) {
     }
 
     if (program.unwindPath) {
-      opts.unwindPath = program.unwindPath.split(',');
+      opts.unwindPath = program.unwindPath.split(';');
     }
 
     var csv = json2csv(opts);
